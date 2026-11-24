@@ -378,7 +378,11 @@ footer p{margin:0 0 .4em;max-width:70ch}
   .mbar a.wa{background:#1f9d55}
   .mbar a.pri{background:var(--rot)}
   footer{padding-bottom:96px}
+  html.nlb .mbar{bottom:70px}
+  html.nlb footer{padding-bottom:150px}
 }
+/* Netlify-Badge unten rechts: eigene Buttons weichen nach oben aus */
+html.nlb .wa-float{bottom:80px}
 </style>
 </head>
 <body class="clean">
@@ -1084,6 +1088,10 @@ form.addEventListener('submit',e=>{
   $('#edlg-cta').addEventListener('click',close);
   render('Alle');
 })();
+
+/* Netlify-Badge erkennen, damit WhatsApp-Button und Handy-Leiste nicht verdeckt werden */
+(()=>{const upd=()=>{const f=document.getElementById('nl-badge-frame');document.documentElement.classList.toggle('nlb',!!f&&f.offsetHeight>0&&getComputedStyle(f).display!=='none')};
+upd();new MutationObserver(upd).observe(document.body,{childList:true,subtree:false,attributes:false});addEventListener('load',()=>setTimeout(upd,500))})();
 </script>
 </body>
 </html>
