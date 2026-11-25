@@ -112,6 +112,15 @@ header.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);bac
 .namecard b{display:block;font-size:1.05rem}
 .namecard span{font-size:.88rem;color:var(--stein)}
 .namecard .dot{display:inline-block;width:9px;height:9px;background:#21a35a;border-radius:50%;margin-right:6px}
+@media (min-width:861px) and (max-width:1239px){
+  .namecard{right:auto;left:50%;transform:translateX(-50%);bottom:28px;min-width:0;width:max-content}
+}
+@media (min-width:1240px){
+  .namecard{right:auto;bottom:auto;left:66%;top:16%;min-width:0;width:max-content;max-width:215px;padding:12px 16px;border-radius:16px}
+  .namecard::before{content:"";position:absolute;left:-7px;top:24px;width:16px;height:16px;background:#fff;border-radius:3px;transform:rotate(45deg)}
+  .namecard span{display:block;line-height:1.35}
+  .namecard .dot{display:inline-block}
+}
 @media (max-width:860px){
   .hero .wrap{grid-template-columns:1fr;padding-top:28px;min-height:0}
   .hero-copy{padding-bottom:0}
@@ -381,6 +390,121 @@ footer p{margin:0 0 .4em;max-width:70ch}
   html.nlb .mbar{bottom:70px}
   html.nlb footer{padding-bottom:150px}
 }
+[hidden]{display:none!important}
+
+/* Standorte-Liste im Kontakt */
+.orte{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
+.orte b{display:block;color:#fff}
+.orte small{display:block}
+.channels .sm{display:none}
+
+/* HANDY-FEINSCHLIFF */
+@media (max-width:600px){
+  section{padding:56px 0}
+  h2.disp{font-size:clamp(2.1rem,9.5vw,2.6rem)}
+  .lead{font-size:1.02rem}
+  .sec-head{gap:12px;margin-bottom:28px}
+  .center-head{margin-bottom:24px}
+  .next{margin-top:28px}
+
+  /* Hero */
+  .hero .wrap{padding-top:20px;gap:8px}
+  .house{width:96px;margin-bottom:4px}
+  .slogan{margin-bottom:16px}
+  .hero-copy p{font-size:1.06rem}
+  .hero-cta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+  .hero-cta .btn{justify-content:center;text-align:center;padding:.85em .5em;font-size:.98rem}
+  .hero-cta .dsk{display:none}
+  .hero-cta .btn{white-space:nowrap}
+  .hero-figure{margin-top:8px}
+  .hero-figure .portrait{max-width:330px}
+  .namecard{right:auto;left:50%;transform:translateX(-50%);bottom:16px;min-width:0;width:max-content;max-width:calc(100% - 24px);padding:10px 14px}
+  .namecard b{font-size:.98rem}
+  .namecard span{font-size:.8rem}
+
+  /* Vertrauens-Leiste 2x2 */
+  .facts ul{grid-template-columns:1fr 1fr;gap:18px 10px;padding:22px 16px}
+  .facts li{flex-direction:column;text-align:center;gap:6px;font-size:.84rem;line-height:1.3}
+  .facts img{width:32px;height:32px}
+
+  /* Rechner */
+  .hubtabs{grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+  .hubtab{flex-direction:column;text-align:center;gap:6px;padding:10px 4px;border-radius:14px}
+  .hubtab img{width:34px;height:34px;padding:4px}
+  .hubtab b{font-size:.8rem;line-height:1.2;hyphens:auto}
+  .hubpanel{padding:18px 16px;gap:22px;border-radius:18px}
+  .controls{gap:18px}
+  .field output{font-size:1.35rem}
+  .result{padding:14px;gap:12px}
+  .breakdown{grid-template-columns:repeat(3,1fr)}
+  .breakdown div{padding:9px 8px}
+  .breakdown span{font-size:.7rem;line-height:1.25}
+  .breakdown div{display:flex;flex-direction:column;justify-content:space-between;gap:4px}
+  .breakdown b{font-size:.92rem;white-space:nowrap}
+  .frow{padding:10px 12px}
+  .frow b{font-size:1.15rem}
+  .ftotal b{font-size:1.5rem}
+
+  /* Themen: Reiter von Rand zu Rand wischen */
+  .topics{gap:18px}
+  .tablist{margin:0 calc(-1*var(--gutter));padding:2px var(--gutter) 8px;scroll-snap-type:x proximity;gap:6px}
+  .tab{padding:9px 14px 9px 10px;font-size:.95rem;gap:10px;border-radius:99px;background:var(--fuge);scroll-snap-align:start;scroll-margin-left:var(--gutter)}
+  .tab img{width:28px;height:28px}
+  .panel{padding:22px 18px;gap:20px;min-height:0}
+  .panel h3{font-size:1.5rem}
+
+  /* Quiz: Fuchs schaut von oben aufs Quiz */
+  .quiz{gap:0}
+  .quiz .fox{order:-1;min-height:0;justify-content:flex-end;margin:0 6px -22px 0;position:relative;z-index:2;pointer-events:none}
+  .quiz .fox img{height:170px;margin:0}
+  .bubble{padding:24px 18px}
+  .q-title{font-size:1.4rem;padding-right:8px}
+
+  /* Ablauf als Zeitstrahl */
+  .steps li{display:grid;grid-template-columns:44px 1fr;column-gap:16px;padding:0 0 22px;border-top:0;position:relative}
+  .steps li::before{grid-row:1/3;width:44px;height:44px;border-radius:50%;background:var(--rot);color:#fff;font-size:1.5rem;display:grid;place-items:center;margin:0}
+  .steps li:not(:last-child)::after{content:"";position:absolute;left:20px;top:50px;bottom:4px;width:4px;border-radius:2px;background:var(--fuge)}
+  .steps h3{margin:9px 0 2px;font-size:1.12rem}
+  .steps p{margin:0}
+
+  /* Über mich */
+  .about{gap:24px}
+  .about .pic{aspect-ratio:4/3}
+  .about .pic img{object-position:50% 22%}
+  .quote{font-size:1.2rem;margin-bottom:16px}
+  .about dl{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+  .about dl>div{background:var(--fuge);border-radius:14px;padding:12px 10px;text-align:center;display:flex;flex-direction:column-reverse;justify-content:flex-end;gap:4px}
+  .about dd{font-size:1.6rem}
+  .about dt{font-size:.72rem;line-height:1.2}
+  .werte-h{font-size:1.35rem;margin:40px 0 16px}
+
+  /* Bewertungen zum Wischen */
+  .gbar{padding:16px 18px;gap:12px}
+  .gscore{font-size:2.2rem}
+  .reviews{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;margin:0 calc(-1*var(--gutter));padding:4px var(--gutter) 14px;scrollbar-width:none}
+  .reviews::-webkit-scrollbar,.tablist::-webkit-scrollbar{display:none}
+  .rcard{flex:0 0 84%;scroll-snap-align:start;scroll-margin-left:var(--gutter)}
+  #stimmen .fine{padding-top:14px!important}
+
+  /* Fragen */
+  .faq summary{padding:18px 40px 18px 0;font-size:1.02rem}
+
+  /* Kontakt: Kacheln */
+  .contact{gap:28px}
+  .channels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:22px}
+  .channels>li:last-child{grid-column:1/-1}
+  .channels>li:not(:last-child)>a{flex-direction:column;align-items:flex-start;gap:10px;padding:14px;height:100%}
+  .channels>li:not(:last-child)>a>div{flex:1;display:flex;flex-direction:column;justify-content:flex-end}
+  .channels b{font-size:.98rem}
+  .channels .lg{display:none}
+  .channels .sm{display:block}
+  .channels>li:last-child>div{align-items:flex-start;padding:14px}
+  .foxnote{margin-top:18px}
+  .foxnote img{height:140px}
+  .foxnote p{margin-bottom:56px;font-size:.95rem}
+  form.cform{padding:20px 16px}
+}
+@media (max-width:380px){.hero-cta .btn{font-size:.9rem;padding:.85em .3em}}
 /* Netlify-Badge unten rechts: eigene Buttons weichen nach oben aus */
 html.nlb .wa-float{bottom:80px}
 </style>
@@ -441,7 +565,7 @@ html.nlb .wa-float{bottom:80px}
       <p>Dein selbstständiger Experte der Schwäbisch Hall für Baufinanzierung und Vorsorge fürs Eigenheim. Direkt in deiner Raiffeisenbank im Oberpfälzer Jura.</p>
       <div class="hero-cta">
         <a class="btn btn-rot" href="#kontakt">Termin vereinbaren</a>
-        <a class="btn btn-wa" href="https://wa.me/4915222684362" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp schreiben</a>
+        <a class="btn btn-wa" href="https://wa.me/4915222684362" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg><span>WhatsApp<span class="dsk"> schreiben</span></span></a>
       </div>
     </div>
     <div class="hero-figure">
@@ -799,7 +923,7 @@ html.nlb .wa-float{bottom:80px}
   <div class="wrap">
     <h2 class="disp" id="faq-h" style="margin-bottom:32px">Häufige Fragen</h2>
     <div class="faq">
-      <details><summary>Was kostet die Beratung?</summary><p>Nichts. Die Beratung ist für dich kostenlos und unverbindlich, auch wenn wir uns öfter treffen. Bezahlt werde ich nur über eine Provision, wenn du dich für einen Abschluss entscheidest.</p></details>
+      <details><summary>Was kostet die Beratung?</summary><p>Nichts. Eine unverbindliche Beratung kostet dich bei mir keinen Cent, auch wenn wir uns öfter treffen. Deshalb lohnt sich ein Ersttermin jederzeit, auch wenn dein Vorhaben noch ganz am Anfang steht.</p></details>
       <details><summary>Bist du Konkurrenz zu meiner Bank?</summary><p>Nein. Ich bin der Experte der Schwäbisch Hall direkt in deiner Raiffeisenbank im Oberpfälzer Jura. Wir arbeiten Hand in Hand, du bekommst alles aus einer Hand.</p></details>
       <details><summary>Wie viel Eigenkapital brauche ich?</summary><p>Ideal sind mindestens die Kaufnebenkosten, also etwa 10 bis 15 % des Kaufpreises. Wie es mit weniger geht, besprechen wir gemeinsam.</p></details>
       <details><summary>Warum schon heute für die eigene Immobilie vorsorgen?</summary><p>Du baust Eigenkapital auf, bekommst staatliche Zuschüsse und sicherst dir einen festen Darlehenszins für später. Technisch läuft das über einen Bausparvertrag. Ideal, wenn du in ein paar Jahren kaufen, modernisieren oder anschlussfinanzieren willst.</p></details>
@@ -820,9 +944,9 @@ html.nlb .wa-float{bottom:80px}
       <ul class="channels">
         <li><a href="https://wa.me/4915222684362" target="_blank" rel="noopener"><svg class="ic" style="color:#1f9d55" aria-hidden="true"><use href="#i-wa"/></svg><div><span>WhatsApp, die schnellste Antwort</span><b>0152 22684362</b></div></a></li>
         <li><a href="tel:+4915222684362"><img src="assets/icons/phone.svg" alt=""><div><span>Telefon</span><b>0152 22684362</b></div></a></li>
-        <li><a href="mailto:valentin.kirsch@schwaebisch-hall.de"><img src="assets/icons/email_send.svg" alt=""><div><span>E-Mail</span><b>valentin.kirsch@schwaebisch-hall.de</b></div></a></li>
+        <li><a href="mailto:valentin.kirsch@schwaebisch-hall.de"><img src="assets/icons/email_send.svg" alt=""><div><span>E-Mail</span><b class="lg">valentin.kirsch@schwaebisch-hall.de</b><b class="sm">Mail schreiben</b></div></a></li>
         <li><a href="https://www.instagram.com/jura.finanzen/" target="_blank" rel="noopener"><img src="assets/icons/instagram.svg" alt=""><div><span>Instagram</span><b>@jura.finanzen</b></div></a></li>
-        <li><div><img src="assets/icons/location-red.svg" alt=""><div><span>Vor Ort in der Raiffeisenbank im Oberpfälzer Jura, bei dir zu Hause oder online</span><b>Parsberg</b> <small>Marktstr. 3</small>, <b>Seubersdorf</b> <small>Nürnberger Str. 2</small><br><b>Velburg</b> <small>Stadtplatz 3</small>, <b>Hohenfels</b> <small>Turmgasse 21</small></div></div></li>
+        <li><div><img src="assets/icons/location-red.svg" alt=""><div><span>Vor Ort in der Raiffeisenbank im Oberpfälzer Jura, bei dir zu Hause oder online</span><ul class="orte"><li><b>Parsberg</b><small>Marktstr. 3</small></li><li><b>Seubersdorf</b><small>Nürnberger Str. 2</small></li><li><b>Velburg</b><small>Stadtplatz 3</small></li><li><b>Hohenfels</b><small>Turmgasse 21</small></li></ul></div></div></li>
       </ul>
       <div class="foxnote"><img id="kontakt-fox" src="assets/fuchs-herz.webp" alt="" width="357" height="900" loading="lazy"><p>Ich freu mich auf dich! In der Filiale, bei dir zu Hause oder per Video.</p></div>
     </div>
