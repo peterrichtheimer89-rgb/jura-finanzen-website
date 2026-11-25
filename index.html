@@ -510,6 +510,26 @@ footer p{margin:0 0 .4em;max-width:70ch}
   form.cform{padding:20px 16px}
 }
 @media (max-width:380px){.hero-cta .btn{font-size:.9rem;padding:.85em .3em}}
+/* WEIHNACHTSMODUS (1.12. bis 6.1.) */
+#snow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.hero-copy{position:relative}
+.xmas{position:absolute;top:-14px;left:205px;display:flex;align-items:center;gap:8px;z-index:2;pointer-events:none}
+.xmas img{height:190px;width:auto;filter:drop-shadow(0 14px 16px rgba(110,90,0,.3));transform-origin:50% 100%;animation:xwave 2.6s ease-in-out infinite}
+.xmas-bubble{position:relative;margin:0;background:#fff;border-radius:16px;padding:10px 14px;box-shadow:0 12px 30px -14px rgba(60,50,0,.55);max-width:190px;animation:xpop .5s 1.9s cubic-bezier(.3,1.5,.5,1) both}
+.xmas-bubble::after{content:"";position:absolute;right:-7px;top:50%;margin-top:-7px;width:14px;height:14px;background:#fff;border-radius:2px;transform:rotate(45deg)}
+.xmas-bubble b{display:block;color:var(--rot);font-weight:850;font-variation-settings:"wdth" 75;font-size:1.3rem;line-height:1.05}
+.xmas-bubble small{display:block;color:var(--stein);font-size:.82rem;line-height:1.25;margin-top:3px}
+@keyframes xwave{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg)}}
+@keyframes xpop{from{opacity:0;transform:scale(.6)}}
+@media (max-width:860px){.xmas{left:140px}.xmas img{height:140px}}
+@media (max-width:600px){
+  .xmas{left:auto;right:-4px;top:-8px;gap:6px}
+  .xmas img{height:112px}
+  .xmas-bubble{max-width:142px;padding:8px 10px;border-radius:13px}
+  .xmas-bubble b{font-size:1.02rem}
+  .xmas-bubble small{font-size:.72rem}
+}
+@media (max-width:380px){.xmas img{height:100px}.xmas-bubble{max-width:118px}.xmas-bubble b{font-size:.95rem}}
 /* Netlify-Badge unten rechts: eigene Buttons weichen nach oben aus */
 html.nlb .wa-float{bottom:80px}
 </style>
@@ -543,8 +563,13 @@ html.nlb .wa-float{bottom:80px}
 
 <!-- HERO -->
 <div class="hero" id="hero">
+  <canvas id="snow" aria-hidden="true" hidden></canvas>
   <div class="wrap">
     <div class="hero-copy">
+      <div class="xmas" id="xmas" hidden>
+        <p class="xmas-bubble"><b id="xmas-t">Frohe Weihnachten!</b><small id="xmas-s">und eine schöne Adventszeit</small></p>
+        <img data-src="assets/fuchs-weihnachten.webp" alt="Der Fuchs mit Weihnachtsmütze winkt mit einem Geschenk" width="728" height="900">
+      </div>
       <svg class="house" viewBox="0 0 240 200" role="img" aria-label="Ein Haus aus roten Steinen">
         <rect class="hb" x="44" y="176" width="48" height="20" rx="3" style="--d:0.15s"/>
         <rect class="hb" x="148" y="176" width="48" height="20" rx="3" style="--d:0.22s"/>
@@ -1156,8 +1181,34 @@ $('#quiz-body').addEventListener('click',e=>{
 });
 renderQuiz();
 
-/* seasonal fox in December */
-(()=>{const d=new Date(),m=d.getMonth(),day=d.getDate();if(m===11||(m===0&&day<=6)){const f=$('#kontakt-fox');f.src='assets/fuchs-weihnachten.webp';f.width=728}})();
+/* Weihnachtsmodus: 1. Dezember bis 6. Januar, Vorschau mit ?weihnachten */
+(()=>{const d=new Date(),m=d.getMonth(),day=d.getDate(),y=d.getFullYear();
+  const preview=new URLSearchParams(location.search).has('weihnachten');
+  if(!(preview||m===11||(m===0&&day<=6)))return;
+  const kf=$('#kontakt-fox');kf.src='assets/fuchs-weihnachten.webp';kf.width=728;
+  // Gruß mit Fuchs
+  const x=$('#xmas'),img=x.querySelector('img');img.src=img.dataset.src;
+  let t='Frohe Weihnachten!',sub='und eine schöne Adventszeit';
+  if(m===11&&day>=24&&day<=26)sub='und schöne Feiertage';
+  else if(m===11&&day>=27){t='Guten Rutsch!';sub='ins neue Jahr'}
+  else if(m===0){t='Frohes neues Jahr!';sub='Alles Gute für '+y}
+  $('#xmas-t').textContent=t;$('#xmas-s').textContent=sub;x.hidden=false;
+  // Schnee nur im gelben Bereich oben
+  const hero=$('#hero'),cv=$('#snow');cv.hidden=false;const ctx=cv.getContext('2d');
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,dpr=1,flakes=[],run=false,raf=0,visible=true;
+  const mk=(top)=>({x:Math.random()*W,y:top?Math.random()*H:-6,r:1.3+Math.random()*2.7,v:.25+Math.random()*.7,p:Math.random()*6.3,a:.5+Math.random()*.5});
+  const size=()=>{dpr=Math.min(2,devicePixelRatio||1);W=hero.clientWidth;H=hero.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.round(Math.min(90,Math.max(26,W*H/11000)));flakes=Array.from({length:n},()=>mk(true));draw()};
+  const draw=()=>{ctx.clearRect(0,0,W,H);for(const f of flakes){ctx.beginPath();ctx.arc(f.x+.6,f.y+.8,f.r+.4,0,6.3);ctx.fillStyle='rgba(150,130,0,.16)';ctx.fill();
+    ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,6.3);ctx.fillStyle='rgba(255,255,255,'+f.a+')';ctx.fill()}};
+  const step=()=>{for(const f of flakes){f.y+=f.v;f.p+=.012;f.x+=Math.sin(f.p)*.35;if(f.y>H+6){Object.assign(f,mk(false))}if(f.x<-6)f.x=W+6;if(f.x>W+6)f.x=-6}
+    draw();raf=requestAnimationFrame(step)};
+  const update=()=>{const go=!still&&visible&&!document.hidden;if(go&&!run){run=true;raf=requestAnimationFrame(step)}else if(!go&&run){run=false;cancelAnimationFrame(raf)}};
+  size();let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(size,200)});
+  if('IntersectionObserver' in window)new IntersectionObserver(e=>{visible=e[0].isIntersecting;update()}).observe(hero);
+  document.addEventListener('visibilitychange',update);update();
+})();
 
 /* topic deep links preselect form */
 document.addEventListener('click',e=>{const a=e.target.closest('[data-topic]');if(!a)return;const r=$(`#chips input[value="${a.dataset.topic}"]`);if(r)r.checked=true});
