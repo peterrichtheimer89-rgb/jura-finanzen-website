@@ -112,11 +112,11 @@ header.top{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);bac
 .namecard b{display:block;font-size:1.05rem}
 .namecard span{font-size:.88rem;color:var(--stein)}
 .namecard .dot{display:inline-block;width:9px;height:9px;background:#21a35a;border-radius:50%;margin-right:6px}
-@media (min-width:861px) and (max-width:1239px){
+@media (min-width:861px) and (max-width:1319px){
   .namecard{right:auto;left:50%;transform:translateX(-50%);bottom:28px;min-width:0;width:max-content}
 }
-@media (min-width:1240px){
-  .namecard{right:auto;bottom:auto;left:66%;top:16%;min-width:0;width:max-content;max-width:215px;padding:12px 16px;border-radius:16px}
+@media (min-width:1320px){
+  .namecard{right:auto;bottom:auto;left:71%;top:16%;min-width:0;width:max-content;max-width:205px;padding:12px 16px;border-radius:16px}
   .namecard::before{content:"";position:absolute;left:-7px;top:24px;width:16px;height:16px;background:#fff;border-radius:3px;transform:rotate(45deg)}
   .namecard span{display:block;line-height:1.35}
   .namecard .dot{display:inline-block}
@@ -382,13 +382,18 @@ footer p{margin:0 0 .4em;max-width:70ch}
 .mbar{display:none}
 @media (max-width:700px){
   .wa-float{display:none}
-  .mbar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:60;gap:6px;background:var(--asphalt);border-radius:99px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
-  .mbar a{flex:1;text-align:center;text-decoration:none;color:#fff;font-weight:700;padding:11px 6px;border-radius:99px;font-size:.9rem}
+  /* Schnellkontakt als schmale Leiste rechts: WhatsApp, Anrufen, Termin */
+  .mbar{display:flex;flex-direction:column;gap:10px;position:fixed;right:12px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;transition:opacity .25s,transform .25s}
+  .mbar a{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:#fff;text-decoration:none;box-shadow:0 8px 20px rgba(0,0,0,.28)}
+  .mbar a:active{transform:scale(.94)}
+  .mbar svg{width:24px;height:24px}
   .mbar a.wa{background:#1f9d55}
+  .mbar a.wa svg{width:28px;height:28px}
+  .mbar a.tel{background:var(--asphalt)}
   .mbar a.pri{background:var(--rot)}
-  footer{padding-bottom:96px}
-  html.nlb .mbar{bottom:70px}
-  html.nlb footer{padding-bottom:150px}
+  html.rail-off .mbar{opacity:0;transform:translateY(16px) scale(.9);pointer-events:none}
+  html.nlb .mbar{bottom:calc(76px + env(safe-area-inset-bottom))}
+  footer{padding-bottom:40px}
 }
 [hidden]{display:none!important}
 
@@ -1017,9 +1022,9 @@ html.nlb .wa-float{bottom:80px}
 
 <a class="wa-float" href="https://wa.me/4915222684362" target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben" style="color:#fff"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
 <nav class="mbar" aria-label="Schnellkontakt">
-  <a href="tel:+4915222684362">Anrufen</a>
-  <a class="wa" href="https://wa.me/4915222684362" target="_blank" rel="noopener">WhatsApp</a>
-  <a class="pri" href="#kontakt">Termin</a>
+  <a class="wa" href="https://wa.me/4915222684362" target="_blank" rel="noopener" aria-label="Per WhatsApp schreiben"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
+  <a class="tel" href="tel:+4915222684362" aria-label="Anrufen"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.33.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></a>
+  <a class="pri" href="#kontakt" aria-label="Termin vereinbaren"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg></a>
 </nav>
 
 <script src="erfolge.js"></script>
@@ -1216,6 +1221,11 @@ form.addEventListener('submit',e=>{
 /* Netlify-Badge erkennen, damit WhatsApp-Button und Handy-Leiste nicht verdeckt werden */
 (()=>{const upd=()=>{const f=document.getElementById('nl-badge-frame');document.documentElement.classList.toggle('nlb',!!f&&f.offsetHeight>0&&getComputedStyle(f).display!=='none')};
 upd();new MutationObserver(upd).observe(document.body,{childList:true,subtree:false,attributes:false});addEventListener('load',()=>setTimeout(upd,500))})();
+
+/* Schnellkontakt-Leiste nur zeigen, wenn Hero-Buttons und Formular nicht im Bild sind */
+(()=>{if(!('IntersectionObserver' in window))return;const seen=new Map();const t=[document.querySelector('.hero-cta'),document.getElementById('cform')].filter(Boolean);
+const io=new IntersectionObserver(es=>{es.forEach(e=>seen.set(e.target,e.isIntersecting));document.documentElement.classList.toggle('rail-off',[...seen.values()].some(Boolean))});
+t.forEach(el=>io.observe(el))})();
 </script>
 </body>
 </html>
